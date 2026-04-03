@@ -1,0 +1,16 @@
+<resources>
+    <style name="Theme.HostVpn" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#2F5EA8</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#4A6FA9</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSurface">#F8FAFD</item>
+        <item name="colorSurfaceVariant">#E3EAF5</item>
+        <item name="colorOnSurface">#161C26</item>
+        <item name="colorOnSurfaceVariant">#465166</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

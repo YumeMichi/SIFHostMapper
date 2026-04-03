@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SIF Host Mapper</string>
+    <string name="host_label_placeholder">域名</string>
+    <string name="host_label_format">域名：%1$s</string>
+    <string name="ip_hint">目标 IP</string>
+    <string name="host_switch_label">启用域名映射</string>
+    <string name="status_off">状态：未开启</string>
+    <string name="status_on_format">状态：已开启（%1$s -&gt; %2$s）</string>
+    <string name="toast_vpn_permission_required">需要 VPN 权限</string>
+    <string name="toast_invalid_ipv4">请输入有效的 IPv4 地址</string>
+    <string name="notification_running_title">域名映射已启用</string>
+    <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
+    <string name="notification_channel_name">SIF Host Mapper VPN</string>
+</resources>

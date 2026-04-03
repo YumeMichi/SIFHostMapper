@@ -1,5 +1,12 @@
 package com.yumemichi.sifhostmapper
 
 object HostConfig {
-    const val TARGET_DOMAIN = "mgame.sdo.com"
+    val DEFAULT_HOSTS = listOf(
+        "adv.sdo.com",
+        "mgame.sdo.com",
+        "reportsk-nh.sdo.com",
+        "reportsk.web.sdo.com",
+        "utility.sdoprofile.com",
+        "prod.game1.ll.sdo.com"
+    )
 }

@@ -1,14 +1,18 @@
 <resources>
     <string name="app_name">SIF Host Mapper</string>
-    <string name="host_label_placeholder">網域</string>
-    <string name="host_label_format">網域：%1$s</string>
+    <string name="host_list_title">網域對應</string>
+    <string name="host_input_hint">網域（例如 www.example.com）</string>
+    <string name="add_host_button">新增</string>
     <string name="ip_hint">目標 IP</string>
     <string name="host_switch_label">啟用網域對應</string>
     <string name="status_off">狀態：未啟用</string>
-    <string name="status_on_format">狀態：已啟用（%1$s -&gt; %2$s）</string>
+    <string name="status_on_hosts_format">狀態：已啟用（%1$d 個網域 -&gt; %2$s）</string>
     <string name="toast_vpn_permission_required">需要 VPN 權限</string>
     <string name="toast_invalid_ipv4">請輸入有效的 IPv4 位址</string>
+    <string name="toast_invalid_host">請輸入有效的網域</string>
+    <string name="toast_empty_hosts">請至少設定一個網域</string>
     <string name="notification_running_title">網域對應已啟用</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
+    <string name="notification_running_multi_text_format">%1$d 個網域 -&gt; %2$s</string>
     <string name="notification_channel_name">SIF Host Mapper VPN</string>
 </resources>

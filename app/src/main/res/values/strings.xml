@@ -1,14 +1,18 @@
 <resources>
     <string name="app_name">SIF Host Mapper</string>
-    <string name="host_label_placeholder">Host</string>
-    <string name="host_label_format">Host: %1$s</string>
+    <string name="host_list_title">Mapped Hosts</string>
+    <string name="host_input_hint">Host (e.g. www.example.com)</string>
+    <string name="add_host_button">Add</string>
     <string name="ip_hint">Target IP</string>
     <string name="host_switch_label">Enable Host Mapping</string>
     <string name="status_off">Status: Off</string>
-    <string name="status_on_format">Status: On (%1$s -&gt; %2$s)</string>
+    <string name="status_on_hosts_format">Status: On (%1$d hosts -&gt; %2$s)</string>
     <string name="toast_vpn_permission_required">VPN permission is required</string>
     <string name="toast_invalid_ipv4">Please enter a valid IPv4 address</string>
+    <string name="toast_invalid_host">Please enter a valid host name</string>
+    <string name="toast_empty_hosts">Please configure at least one host</string>
     <string name="notification_running_title">Host Mapping Enabled</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
+    <string name="notification_running_multi_text_format">%1$d hosts -&gt; %2$s</string>
     <string name="notification_channel_name">SIF Host Mapper VPN</string>
 </resources>

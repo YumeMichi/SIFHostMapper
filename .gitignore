@@ -1,6 +1,7 @@
 .gradle/
 .idea/
 android/
+app/release/
 build/
 gradle/
 gradlew

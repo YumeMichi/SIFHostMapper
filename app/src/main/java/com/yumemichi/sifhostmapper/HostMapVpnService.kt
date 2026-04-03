@@ -21,6 +21,8 @@ class HostMapVpnService : VpnService() {
     private val running = AtomicBoolean(false)
 
     private var targetIpBytes: ByteArray? = null
+    private var configuredHosts: List<String> = emptyList()
+    private var matchHosts: Set<String> = emptySet()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -53,8 +55,16 @@ class HostMapVpnService : VpnService() {
             return
         }
         targetIpBytes = addr.address
+        configuredHosts = Prefs.hosts(this).toList()
+        if (configuredHosts.isEmpty()) {
+            Prefs.setEnabled(this, false)
+            stopSelf()
+            return
+        }
+        matchHosts = buildHostMatchSet(configuredHosts)
 
         if (running.get()) {
+            addr.hostAddress?.let { updateRunningNotification(it) }
             isRunning = true
             Prefs.setEnabled(this, true)
             return
@@ -80,13 +90,7 @@ class HostMapVpnService : VpnService() {
             NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
                 .setContentTitle(getString(R.string.notification_running_title))
-                .setContentText(
-                    getString(
-                        R.string.notification_running_text_format,
-                        HostConfig.TARGET_DOMAIN,
-                        addr.hostAddress
-                    )
-                )
+                .setContentText(addr.hostAddress?.let { buildNotificationText(it) })
                 .setOngoing(true)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build()
@@ -163,9 +167,42 @@ class HostMapVpnService : VpnService() {
     }
 
     private fun isTargetDomain(queryName: String): Boolean {
-        if (queryName == HostConfig.TARGET_DOMAIN) return true
-        if (!HostConfig.TARGET_DOMAIN.startsWith("www.") && queryName == "www.${HostConfig.TARGET_DOMAIN}") return true
-        return false
+        return matchHosts.contains(queryName.lowercase())
+    }
+
+    private fun buildHostMatchSet(hosts: Collection<String>): Set<String> {
+        val matched = linkedSetOf<String>()
+        hosts.forEach { host ->
+            val normalized = normalizeHost(host)
+            if (normalized.isEmpty()) return@forEach
+            matched += normalized
+            matched += if (normalized.startsWith("www.")) {
+                normalized.removePrefix("www.")
+            } else {
+                "www.$normalized"
+            }
+        }
+        return matched
+    }
+
+    private fun normalizeHost(raw: String): String {
+        return raw.trim().lowercase().trimEnd('.')
+    }
+
+    private fun buildNotificationText(ip: String): String {
+        return if (configuredHosts.size <= 1) {
+            getString(
+                R.string.notification_running_text_format,
+                configuredHosts.firstOrNull().orEmpty(),
+                ip
+            )
+        } else {
+            getString(
+                R.string.notification_running_multi_text_format,
+                configuredHosts.size,
+                ip
+            )
+        }
     }
 
     private fun forwardToUpstreamDns(query: ByteArray): ByteArray? {
@@ -194,6 +231,20 @@ class HostMapVpnService : VpnService() {
             NotificationManager.IMPORTANCE_LOW
         )
         manager.createNotificationChannel(channel)
+    }
+
+    private fun updateRunningNotification(ip: String) {
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.notify(
+            NOTIFICATION_ID,
+            NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.stat_sys_warning)
+                .setContentTitle(getString(R.string.notification_running_title))
+                .setContentText(buildNotificationText(ip))
+                .setOngoing(true)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build()
+        )
     }
 
     companion object {

@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="16dp"
         app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/Widget.SIF.TextInputLayout.ExposedDropdown"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -80,7 +80,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/addGroupButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.SIF.Button.Outlined"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -92,7 +92,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ipInputLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.SIF.TextInputLayout.Outlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -117,7 +117,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/hostInputLayout"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.SIF.TextInputLayout.Outlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -135,7 +135,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/addHostButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.SIF.Button.Outlined"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

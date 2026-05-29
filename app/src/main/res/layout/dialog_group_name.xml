@@ -10,7 +10,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/groupNameInputLayout"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.SIF.TextInputLayout.Outlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/group_name_hint"

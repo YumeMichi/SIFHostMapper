@@ -1,0 +1,18 @@
+<resources>
+    <style name="ShapeAppearanceOverlaySifComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="Widget.SIF.TextInputLayout.Outlined" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlaySifComponent</item>
+    </style>
+
+    <style name="Widget.SIF.TextInputLayout.ExposedDropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlaySifComponent</item>
+    </style>
+
+    <style name="Widget.SIF.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlaySifComponent</item>
+    </style>
+</resources>

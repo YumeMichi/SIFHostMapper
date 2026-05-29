@@ -5,6 +5,7 @@
     <string name="add_host_button">Add</string>
     <string name="ip_hint">Target IP</string>
     <string name="host_switch_label">Enable Host Mapping</string>
+    <string name="validate_host_switch_label">Validate host format</string>
     <string name="status_off">Status: Off</string>
     <string name="status_on_hosts_format">Status: On (%1$d hosts -&gt; %2$s)</string>
     <string name="toast_vpn_permission_required">VPN permission is required</string>

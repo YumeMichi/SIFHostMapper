@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hostInput: TextInputEditText
     private lateinit var addHostButton: MaterialButton
     private lateinit var hostChipGroup: ChipGroup
+    private lateinit var validateHostSwitch: MaterialSwitch
     private lateinit var vpnSwitch: MaterialSwitch
     private lateinit var statusText: TextView
     private lateinit var switchListener: CompoundButton.OnCheckedChangeListener
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         hostInput = findViewById(R.id.hostInput)
         addHostButton = findViewById(R.id.addHostButton)
         hostChipGroup = findViewById(R.id.hostChipGroup)
+        validateHostSwitch = findViewById(R.id.validateHostSwitch)
         vpnSwitch = findViewById(R.id.vpnSwitch)
         statusText = findViewById(R.id.statusText)
         findViewById<TextView>(R.id.titleText).text = getString(R.string.host_list_title)
@@ -88,6 +90,12 @@ class MainActivity : AppCompatActivity() {
         hosts.clear()
         hosts.addAll(Prefs.hosts(this))
         renderHostChips()
+
+        validateHostSwitch.setOnCheckedChangeListener(null)
+        validateHostSwitch.isChecked = Prefs.validateHostsEnabled(this)
+        validateHostSwitch.setOnCheckedChangeListener { _, isChecked ->
+            Prefs.setValidateHostsEnabled(this, isChecked)
+        }
 
         if (!HostMapVpnService.isRunning) {
             Prefs.setEnabled(this, false)
@@ -171,7 +179,8 @@ class MainActivity : AppCompatActivity() {
     private fun addHostFromInput() {
         val raw = hostInput.text?.toString().orEmpty()
         val host = normalizeHost(raw)
-        if (!isValidHost(host)) {
+        val validateHost = validateHostSwitch.isChecked
+        if (host.isEmpty() || (validateHost && !isValidHost(host))) {
             Toast.makeText(this, getString(R.string.toast_invalid_host), Toast.LENGTH_SHORT).show()
             return
         }

@@ -5,6 +5,7 @@
     <string name="add_host_button">新增</string>
     <string name="ip_hint">目標 IP</string>
     <string name="host_switch_label">啟用網域對應</string>
+    <string name="validate_host_switch_label">驗證網域格式</string>
     <string name="status_off">狀態：未啟用</string>
     <string name="status_on_hosts_format">狀態：已啟用（%1$d 個網域 -&gt; %2$s）</string>
     <string name="toast_vpn_permission_required">需要 VPN 權限</string>

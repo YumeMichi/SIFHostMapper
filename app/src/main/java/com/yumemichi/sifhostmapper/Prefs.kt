@@ -8,6 +8,7 @@ object Prefs {
     private const val KEY_TARGET_IP = "target_ip"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_HOSTS = "hosts"
+    private const val KEY_VALIDATE_HOSTS = "validate_hosts"
 
     fun targetIp(context: Context): String {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -51,6 +52,18 @@ object Prefs {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             .edit {
                 putStringSet(KEY_HOSTS, normalized)
+            }
+    }
+
+    fun validateHostsEnabled(context: Context): Boolean {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .getBoolean(KEY_VALIDATE_HOSTS, false)
+    }
+
+    fun setValidateHostsEnabled(context: Context, enabled: Boolean) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .edit {
+                putBoolean(KEY_VALIDATE_HOSTS, enabled)
             }
     }
 

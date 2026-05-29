@@ -119,6 +119,13 @@
                     app:singleLine="false" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/validateHostSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/validate_host_switch_label" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/vpnSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

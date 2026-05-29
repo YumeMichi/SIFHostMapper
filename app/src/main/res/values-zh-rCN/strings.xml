@@ -5,6 +5,7 @@
     <string name="add_host_button">添加</string>
     <string name="ip_hint">目标 IP</string>
     <string name="host_switch_label">启用域名映射</string>
+    <string name="validate_host_switch_label">校验域名格式</string>
     <string name="status_off">状态：未开启</string>
     <string name="status_on_hosts_format">状态：已开启（%1$d 个域名 -&gt; %2$s）</string>
     <string name="toast_vpn_permission_required">需要 VPN 权限</string>

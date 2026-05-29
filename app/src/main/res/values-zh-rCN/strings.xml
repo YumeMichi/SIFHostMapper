@@ -1,19 +1,35 @@
 <resources>
     <string name="app_name">SIF Mapper</string>
-    <string name="host_list_title">域名映射</string>
+    <string name="host_list_title">映射分组</string>
+    <string name="group_selector_hint">分组</string>
+    <string name="add_group_button">添加</string>
+    <string name="group_name_format">分组 %1$d</string>
+    <string name="group_name_hint">分组名称</string>
+    <string name="dialog_add_group_title">新建分组</string>
+    <string name="dialog_edit_group_title">重命名分组</string>
+    <string name="action_save">保存</string>
+    <string name="toast_group_name_required">请输入分组名称</string>
+    <string name="toast_duplicate_group_name_format">分组名称已存在：%1$s</string>
+    <string name="toast_domain_ip_conflict_format">域名 %1$s 映射到了不同 IP（%2$s / %3$s）</string>
+    <string name="toast_illegal_domain_chars">域名包含不支持的字符</string>
+    <string name="group_delete_icon_content_desc">删除分组</string>
+    <string name="group_edit_icon_content_desc">重命名分组</string>
     <string name="host_input_hint">域名（例如 www.example.com）</string>
     <string name="add_host_button">添加</string>
     <string name="ip_hint">目标 IP</string>
     <string name="host_switch_label">启用域名映射</string>
     <string name="validate_host_switch_label">校验域名格式</string>
     <string name="status_off">状态：未开启</string>
-    <string name="status_on_hosts_format">状态：已开启（%1$d 个域名 -&gt; %2$s）</string>
+    <string name="status_on_groups_format">状态：已开启（%1$d 个域名，%2$d 个分组）</string>
     <string name="toast_vpn_permission_required">需要 VPN 权限</string>
     <string name="toast_invalid_ipv4">请输入有效的 IPv4 地址</string>
     <string name="toast_invalid_host">请输入有效的域名</string>
     <string name="toast_empty_hosts">请至少配置一个域名</string>
+    <string name="toast_cannot_remove_last_group">至少需要保留一个分组</string>
+    <string name="toast_no_active_groups">请至少配置一个有效分组</string>
     <string name="notification_running_title">域名映射已启用</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
     <string name="notification_running_multi_text_format">%1$d 个域名 -&gt; %2$s</string>
+    <string name="notification_running_summary_format">%1$d 个域名，%2$d 个分组</string>
     <string name="notification_channel_name">SIF Mapper VPN</string>
 </resources>

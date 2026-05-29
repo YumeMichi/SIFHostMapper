@@ -1,19 +1,35 @@
 <resources>
     <string name="app_name">SIF Mapper</string>
-    <string name="host_list_title">網域對應</string>
+    <string name="host_list_title">對應分組</string>
+    <string name="group_selector_hint">分組</string>
+    <string name="add_group_button">新增</string>
+    <string name="group_name_format">分組 %1$d</string>
+    <string name="group_name_hint">分組名稱</string>
+    <string name="dialog_add_group_title">新增分組</string>
+    <string name="dialog_edit_group_title">重新命名分組</string>
+    <string name="action_save">儲存</string>
+    <string name="toast_group_name_required">請輸入分組名稱</string>
+    <string name="toast_duplicate_group_name_format">分組名稱已存在：%1$s</string>
+    <string name="toast_domain_ip_conflict_format">網域 %1$s 對應到不同 IP（%2$s / %3$s）</string>
+    <string name="toast_illegal_domain_chars">網域包含不支援的字元</string>
+    <string name="group_delete_icon_content_desc">刪除分組</string>
+    <string name="group_edit_icon_content_desc">重新命名分組</string>
     <string name="host_input_hint">網域（例如 www.example.com）</string>
     <string name="add_host_button">新增</string>
     <string name="ip_hint">目標 IP</string>
     <string name="host_switch_label">啟用網域對應</string>
     <string name="validate_host_switch_label">驗證網域格式</string>
     <string name="status_off">狀態：未啟用</string>
-    <string name="status_on_hosts_format">狀態：已啟用（%1$d 個網域 -&gt; %2$s）</string>
+    <string name="status_on_groups_format">狀態：已啟用（%1$d 個網域，%2$d 個分組）</string>
     <string name="toast_vpn_permission_required">需要 VPN 權限</string>
     <string name="toast_invalid_ipv4">請輸入有效的 IPv4 位址</string>
     <string name="toast_invalid_host">請輸入有效的網域</string>
     <string name="toast_empty_hosts">請至少設定一個網域</string>
+    <string name="toast_cannot_remove_last_group">至少需要保留一個分組</string>
+    <string name="toast_no_active_groups">請至少設定一個有效分組</string>
     <string name="notification_running_title">網域對應已啟用</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
     <string name="notification_running_multi_text_format">%1$d 個網域 -&gt; %2$s</string>
+    <string name="notification_running_summary_format">%1$d 個網域，%2$d 個分組</string>
     <string name="notification_channel_name">SIF Mapper VPN</string>
 </resources>

@@ -20,16 +20,15 @@ class HostMapVpnService : VpnService() {
     private var workerThread: Thread? = null
     private val running = AtomicBoolean(false)
 
-    private var targetIpBytes: ByteArray? = null
-    private var configuredHosts: List<String> = emptyList()
-    private var matchHosts: Set<String> = emptySet()
+    private var hostToIpBytes: Map<String, ByteArray> = emptyMap()
+    private var activeGroupCount = 0
+    private var activeDomainCount = 0
+    private var firstMappedDomain = ""
+    private var firstMappedIp = ""
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            ACTION_START -> {
-                val ip = intent.getStringExtra(EXTRA_TARGET_IP).orEmpty()
-                startVpn(ip)
-            }
+            ACTION_START -> startVpn()
             ACTION_STOP -> {
                 stopVpn()
                 stopSelf()
@@ -43,35 +42,22 @@ class HostMapVpnService : VpnService() {
         super.onDestroy()
     }
 
-    private fun startVpn(ipText: String) {
-        val addr = try {
-            InetAddress.getByName(ipText)
-        } catch (_: Exception) {
-            null
-        }
-        if (addr == null || addr.address.size != 4) {
+    private fun startVpn() {
+        if (!reloadMappings()) {
             Prefs.setEnabled(this, false)
             stopSelf()
             return
         }
-        targetIpBytes = addr.address
-        configuredHosts = Prefs.hosts(this).toList()
-        if (configuredHosts.isEmpty()) {
-            Prefs.setEnabled(this, false)
-            stopSelf()
-            return
-        }
-        matchHosts = buildHostMatchSet(configuredHosts)
 
         if (running.get()) {
-            addr.hostAddress?.let { updateRunningNotification(it) }
+            updateRunningNotification()
             isRunning = true
             Prefs.setEnabled(this, true)
             return
         }
 
         val builder = Builder()
-            .setSession("SIFHostMapper")
+            .setSession("SIFMapper")
             .addAddress(VPN_LOCAL_IP, 32)
             .addDnsServer(VPN_DNS_IP)
             .addRoute(VPN_DNS_IP, 32)
@@ -90,7 +76,7 @@ class HostMapVpnService : VpnService() {
             NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
                 .setContentTitle(getString(R.string.notification_running_title))
-                .setContentText(addr.hostAddress?.let { buildNotificationText(it) })
+                .setContentText(buildNotificationText())
                 .setOngoing(true)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build()
@@ -114,6 +100,38 @@ class HostMapVpnService : VpnService() {
         }
         vpnInterface = null
         stopForeground(STOP_FOREGROUND_REMOVE)
+    }
+
+    private fun reloadMappings(): Boolean {
+        val groups = Prefs.mappingGroups(this)
+        val map = linkedMapOf<String, ByteArray>()
+        activeGroupCount = 0
+        activeDomainCount = 0
+        firstMappedDomain = ""
+        firstMappedIp = ""
+
+        groups.forEach { group ->
+            val ip = parseIpv4(group.targetIp) ?: return@forEach
+            val normalizedDomains = group.domains
+                .map(::normalizeDomain)
+                .filter { it.isNotEmpty() }
+            if (normalizedDomains.isEmpty()) return@forEach
+
+            activeGroupCount += 1
+            normalizedDomains.forEach { domain ->
+                if (!map.containsKey(domain)) {
+                    map[domain] = ip
+                }
+                activeDomainCount += 1
+                if (firstMappedDomain.isEmpty()) {
+                    firstMappedDomain = domain
+                    firstMappedIp = group.targetIp.trim()
+                }
+            }
+        }
+
+        hostToIpBytes = map
+        return hostToIpBytes.isNotEmpty()
     }
 
     private fun runPacketLoop(fd: ParcelFileDescriptor) {
@@ -154,11 +172,11 @@ class HostMapVpnService : VpnService() {
 
     private fun resolveDnsQuery(query: ByteArray): ByteArray? {
         val parsed = DnsPacketUtils.parseQuery(query) ?: return null
+        val mappedIp = hostToIpBytes[parsed.name.lowercase()]
 
-        if (isTargetDomain(parsed.name)) {
+        if (mappedIp != null) {
             if (parsed.qType == 1) {
-                val targetIp = targetIpBytes ?: return null
-                return DnsPacketUtils.buildMappedAResponse(query, targetIp)
+                return DnsPacketUtils.buildMappedAResponse(query, mappedIp)
             }
             return DnsPacketUtils.buildNoErrorEmptyResponse(query)
         }
@@ -166,43 +184,32 @@ class HostMapVpnService : VpnService() {
         return forwardToUpstreamDns(query)
     }
 
-    private fun isTargetDomain(queryName: String): Boolean {
-        return matchHosts.contains(queryName.lowercase())
-    }
-
-    private fun buildHostMatchSet(hosts: Collection<String>): Set<String> {
-        val matched = linkedSetOf<String>()
-        hosts.forEach { host ->
-            val normalized = normalizeHost(host)
-            if (normalized.isEmpty()) return@forEach
-            matched += normalized
-            matched += if (normalized.startsWith("www.")) {
-                normalized.removePrefix("www.")
-            } else {
-                "www.$normalized"
-            }
-        }
-        return matched
-    }
-
-    private fun normalizeHost(raw: String): String {
-        return raw.trim().lowercase().trimEnd('.')
-    }
-
-    private fun buildNotificationText(ip: String): String {
-        return if (configuredHosts.size <= 1) {
-            getString(
+    private fun buildNotificationText(): String {
+        if (activeDomainCount <= 1 && firstMappedDomain.isNotEmpty()) {
+            return getString(
                 R.string.notification_running_text_format,
-                configuredHosts.firstOrNull().orEmpty(),
-                ip
-            )
-        } else {
-            getString(
-                R.string.notification_running_multi_text_format,
-                configuredHosts.size,
-                ip
+                firstMappedDomain,
+                firstMappedIp
             )
         }
+        return getString(
+            R.string.notification_running_summary_format,
+            activeDomainCount,
+            activeGroupCount
+        )
+    }
+
+    private fun parseIpv4(ip: String): ByteArray? {
+        return try {
+            val addr = InetAddress.getByName(ip.trim())
+            if (addr.hostAddress == ip.trim() && addr.address.size == 4) addr.address else null
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun normalizeDomain(raw: String): String {
+        return raw.trim().lowercase().trimEnd('.')
     }
 
     private fun forwardToUpstreamDns(query: ByteArray): ByteArray? {
@@ -233,14 +240,14 @@ class HostMapVpnService : VpnService() {
         manager.createNotificationChannel(channel)
     }
 
-    private fun updateRunningNotification(ip: String) {
+    private fun updateRunningNotification() {
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(
             NOTIFICATION_ID,
             NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
                 .setContentTitle(getString(R.string.notification_running_title))
-                .setContentText(buildNotificationText(ip))
+                .setContentText(buildNotificationText())
                 .setOngoing(true)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build()
@@ -253,7 +260,6 @@ class HostMapVpnService : VpnService() {
 
         const val ACTION_START = "com.yumemichi.sifhostmapper.START"
         const val ACTION_STOP = "com.yumemichi.sifhostmapper.STOP"
-        const val EXTRA_TARGET_IP = "target_ip"
 
         private const val CHANNEL_ID = "host_vpn_channel"
         private const val NOTIFICATION_ID = 1011

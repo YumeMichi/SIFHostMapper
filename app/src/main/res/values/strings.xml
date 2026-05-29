@@ -1,19 +1,35 @@
 <resources>
     <string name="app_name">SIF Mapper</string>
-    <string name="host_list_title">Mapped Domains</string>
+    <string name="host_list_title">Mapping Groups</string>
+    <string name="group_selector_hint">Group</string>
+    <string name="add_group_button">Add</string>
+    <string name="group_name_format">Group %1$d</string>
+    <string name="group_name_hint">Group name</string>
+    <string name="dialog_add_group_title">New group</string>
+    <string name="dialog_edit_group_title">Rename group</string>
+    <string name="action_save">Save</string>
+    <string name="toast_group_name_required">Please enter a group name</string>
+    <string name="toast_duplicate_group_name_format">Group name already exists: %1$s</string>
+    <string name="toast_domain_ip_conflict_format">Domain %1$s maps to different IPs (%2$s / %3$s)</string>
+    <string name="toast_illegal_domain_chars">Domain contains unsupported characters</string>
+    <string name="group_delete_icon_content_desc">Delete group</string>
+    <string name="group_edit_icon_content_desc">Rename group</string>
     <string name="host_input_hint">Domain (e.g. www.example.com)</string>
     <string name="add_host_button">Add</string>
     <string name="ip_hint">Target IP</string>
     <string name="host_switch_label">Enable Domain Mapping</string>
     <string name="validate_host_switch_label">Validate domain format</string>
     <string name="status_off">Status: Off</string>
-    <string name="status_on_hosts_format">Status: On (%1$d domains -&gt; %2$s)</string>
+    <string name="status_on_groups_format">Status: On (%1$d domains in %2$d groups)</string>
     <string name="toast_vpn_permission_required">VPN permission is required</string>
     <string name="toast_invalid_ipv4">Please enter a valid IPv4 address</string>
     <string name="toast_invalid_host">Please enter a valid domain name</string>
     <string name="toast_empty_hosts">Please configure at least one domain</string>
+    <string name="toast_cannot_remove_last_group">At least one group must remain</string>
+    <string name="toast_no_active_groups">Please configure at least one valid group</string>
     <string name="notification_running_title">Domain Mapping Enabled</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
     <string name="notification_running_multi_text_format">%1$d domains -&gt; %2$s</string>
+    <string name="notification_running_summary_format">%1$d domains in %2$d groups</string>
     <string name="notification_channel_name">SIF Mapper VPN</string>
 </resources>

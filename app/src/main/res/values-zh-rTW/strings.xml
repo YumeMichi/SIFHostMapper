@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SIF Host Mapper</string>
+    <string name="app_name">SIF Mapper</string>
     <string name="host_list_title">網域對應</string>
     <string name="host_input_hint">網域（例如 www.example.com）</string>
     <string name="add_host_button">新增</string>
@@ -15,5 +15,5 @@
     <string name="notification_running_title">網域對應已啟用</string>
     <string name="notification_running_text_format">%1$s -&gt; %2$s</string>
     <string name="notification_running_multi_text_format">%1$d 個網域 -&gt; %2$s</string>
-    <string name="notification_channel_name">SIF Host Mapper VPN</string>
+    <string name="notification_channel_name">SIF Mapper VPN</string>
 </resources>
